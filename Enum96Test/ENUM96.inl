@@ -130,17 +130,17 @@
 #define MAP96(m, x, ...)  m(x) IDENTITY(MAP95(m, __VA_ARGS__))
 
 #define EVALUATE_COUNT( \
-	_001, _002, _003, _004, _005, _006, _007, _008, _009, _010, _011, _012, _013, _014, _015, _016, \
-	_017, _018, _019, _020, _021, _022, _023, _024, _025, _026, _027, _028, _029, _030, _031, _032, \
-	_033, _034, _035, _036, _037, _038, _039, _040, _041, _042, _043, _044, _045, _046, _047, _048, \
-	_049, _050, _051, _052, _053, _054, _055, _056, _057, _058, _059, _060, _061, _062, _063, _064, \
-	_065, _066, _067, _068, _069, _070, _071, _072, _073, _074, _075, _076, _077, _078, _079, _080, \
-	_081, _082, _083, _084, _085, _086, _087, _088, _089, _090, _091, _092, _093, _094, _095, _096, \
-	count, ...)    count
+    _001, _002, _003, _004, _005, _006, _007, _008, _009, _010, _011, _012, _013, _014, _015, _016, \
+    _017, _018, _019, _020, _021, _022, _023, _024, _025, _026, _027, _028, _029, _030, _031, _032, \
+    _033, _034, _035, _036, _037, _038, _039, _040, _041, _042, _043, _044, _045, _046, _047, _048, \
+    _049, _050, _051, _052, _053, _054, _055, _056, _057, _058, _059, _060, _061, _062, _063, _064, \
+    _065, _066, _067, _068, _069, _070, _071, _072, _073, _074, _075, _076, _077, _078, _079, _080, \
+    _081, _082, _083, _084, _085, _086, _087, _088, _089, _090, _091, _092, _093, _094, _095, _096, \
+    count, ...)    count
     
 #define COUNT(...) \
     IDENTITY(EVALUATE_COUNT(__VA_ARGS__, \
-	96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, \
+    96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, \
     80, 79, 78, 77, 76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65, \
     64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, \
     48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, \
@@ -151,15 +151,15 @@
 // The type "T" mentioned above that drops assignment operations.
 template <typename U>
 struct ignore_assign {
-	explicit ignore_assign(U value) : _value(value) { }
-	operator U() const { return _value; }
+    explicit ignore_assign(U value) : _value(value) { }
+    operator U() const { return _value; }
 
-	const ignore_assign& operator =(int dummy) const
-	{
-		return *this;
-	}
+    const ignore_assign& operator =(int dummy) const
+    {
+        return *this;
+    }
 
-	U   _value;
+    U   _value;
 };
 
 
@@ -185,44 +185,44 @@ const TCHAR    terminators[] = _T(" =\t\r\n");
 // The size of terminators includes the implicit '\0'.
 inline bool is_terminator(TCHAR c, size_t index = 0)
 {
-	return
-		index >= _countof(terminators) ? false :
-		c == terminators[index] ? true :
-		is_terminator(c, index + 1);
+    return
+        index >= _countof(terminators) ? false :
+        c == terminators[index] ? true :
+        is_terminator(c, index + 1);
 }
 
 inline bool matches_untrimmed(const TCHAR *untrimmed, const TCHAR *s, bool ignore_case = false, size_t index = 0)
 {
-	return
-		is_terminator(untrimmed[index]) ? s[index] == _T('\0') :
-		(ignore_case ? (_totupper(s[index]) != _totupper(untrimmed[index])) : (s[index] != untrimmed[index])) ? false :
-		matches_untrimmed(untrimmed, s, ignore_case, index + 1);
+    return
+        is_terminator(untrimmed[index]) ? s[index] == _T('\0') :
+        (ignore_case ? (_totupper(s[index]) != _totupper(untrimmed[index])) : (s[index] != untrimmed[index])) ? false :
+        matches_untrimmed(untrimmed, s, ignore_case, index + 1);
 }
 
 // auto dispose string array
 struct safe_string_array {
-	safe_string_array(size_t size) : _size(size), _str_array(NULL) {
-		if (_size > 0) {
-			_str_array = new LPTSTR[size];
-			for (size_t i = 0; i < size; i++)
-				_str_array[i] = NULL;
-		}
-	}
-	~safe_string_array() {
-		if (NULL != _str_array) {
-			for (size_t i = 0; i < _size; i++)
-				delete (_str_array[i]);
-			delete _str_array;
-			_str_array = NULL;
-		}
-	}
+    safe_string_array(size_t size) : _size(size), _str_array(NULL) {
+        if (_size > 0) {
+            _str_array = new LPTSTR[size];
+            for (size_t i = 0; i < size; i++)
+                _str_array[i] = NULL;
+        }
+    }
+    ~safe_string_array() {
+        if (NULL != _str_array) {
+            for (size_t i = 0; i < _size; i++)
+                delete (_str_array[i]);
+            delete _str_array;
+            _str_array = NULL;
+        }
+    }
 
-	LPTSTR& operator[](size_t index) {
-		return _str_array[index];
-	}
+    LPTSTR& operator[](size_t index) {
+        return _str_array[index];
+    }
 
-	size_t     _size;
-	LPTSTR     *_str_array;
+    size_t     _size;
+    LPTSTR     *_str_array;
 };
 
 // The macro proper.
@@ -273,159 +273,159 @@ namespace data_ ## EnumName {                                             \
 struct EnumName {                                                         \
     using _underlying = Underlying;                                       \
     enum _enum : _underlying { __VA_ARGS__ };                             \
-																		  \
-	__declspec(property(get=get_Value))                                   \
+                                                                          \
+    __declspec(property(get=get_Value))                                   \
         _underlying Value;                                                \
     _underlying get_Value(void) const { return _value; }                  \
-	                                                                      \
+                                                                          \
     const TCHAR * ToString() const                                        \
     {                                                                     \
-		int ndx;                                                          \
+        int ndx;                                                          \
         ndx = EnumName::IndexOfMember((EnumName)_value);                  \
-		if (ndx != -1) {                                                  \
-		    return _trimmed_names()[ndx];                                 \
-		}                                                                 \
+        if (ndx != -1) {                                                  \
+            return _trimmed_names()[ndx];                                 \
+        }                                                                 \
                                                                           \
         if (!EnumName::_is_contains_flags()) {                            \
-		    return _to_value(_value);                                     \
+            return _to_value(_value);                                     \
         }                                                                 \
-		                                                                  \
-	    static TCHAR tszValue[1024] = { 0x0 };                            \
-		const TCHAR *lpctName;                                            \
-		int nLen = 0, nNameLen;                                           \
-	    _underlying  val = _value;                                        \
+                                                                          \
+        static TCHAR tszValue[1024] = { 0x0 };                            \
+        const TCHAR *lpctName;                                            \
+        int nLen = 0, nNameLen;                                           \
+        _underlying  val = _value;                                        \
         for (size_t index = 0; index < data_ ## EnumName::_size;          \
              ++index)                                                     \
         {                                                                 \
             if (val & data_ ## EnumName::_values[index])                  \
-			{                                                             \
-				val &= ~data_ ## EnumName::_values[index];                \
+            {                                                             \
+                val &= ~data_ ## EnumName::_values[index];                \
                 lpctName = _trimmed_names()[index];                       \
-				nNameLen = (int)_tcslen(lpctName);                        \
-				if (nLen > 0) {                                           \
-				    if ((nLen + nNameLen + 3) >= 1024) {                  \
-					    nLen = 0; break;                                  \
-					}                                                     \
-					nLen += _stprintf_s(&tszValue[nLen], 1024 - nLen,     \
+                nNameLen = (int)_tcslen(lpctName);                        \
+                if (nLen > 0) {                                           \
+                    if ((nLen + nNameLen + 3) >= 1024) {                  \
+                        nLen = 0; break;                                  \
+                    }                                                     \
+                    nLen += _stprintf_s(&tszValue[nLen], 1024 - nLen,     \
                                         _T(" | %s"), lpctName);           \
-				}                                                         \
-				else {                                                    \
-				    nLen += _stprintf_s(tszValue, 1024,                   \
+                }                                                         \
+                else {                                                    \
+                    nLen += _stprintf_s(tszValue, 1024,                   \
                                         _T("%s"), lpctName);              \
-				}                                                         \
-			}                                                             \
-	    }                                                                 \
-		                                                                  \
-		if (val != 0) {                                                   \
+                }                                                         \
+            }                                                             \
+        }                                                                 \
+                                                                          \
+        if (val != 0) {                                                   \
             lpctName = _to_value(val);                                    \
-			nNameLen = (int)_tcslen(lpctName);                            \
-			if (nLen > 0) {                                               \
-				if ((nLen + nNameLen + 3) >= 1024) {                      \
-					return _to_value(_value);                             \
-				}                                                         \
-				nLen += _stprintf_s(&tszValue[nLen], 1024 - nLen,         \
+            nNameLen = (int)_tcslen(lpctName);                            \
+            if (nLen > 0) {                                               \
+                if ((nLen + nNameLen + 3) >= 1024) {                      \
+                    return _to_value(_value);                             \
+                }                                                         \
+                nLen += _stprintf_s(&tszValue[nLen], 1024 - nLen,         \
                                     _T(" | %s"), lpctName);               \
-			}                                                             \
-			else {                                                        \
-				nLen += _stprintf_s(tszValue, 1024,                       \
+            }                                                             \
+            else {                                                        \
+                nLen += _stprintf_s(tszValue, 1024,                       \
                                     _T("%s"), lpctName);                  \
-			}                                                             \
-		}                                                                 \
-		                                                                  \
+            }                                                             \
+        }                                                                 \
+                                                                          \
         return (nLen > 0) ? tszValue : _to_value(_value);                 \
     }                                                                     \
-	                                                                      \
-    int ToUInt8() const { return (unsigned char)_value; }			      \
                                                                           \
-    int ToInt32() const { return (int)_value; }							  \
-	                                                                      \
-    int ToUInt32() const { return (unsigned int)_value; }				  \
-	                                                                      \
-	bool HasFlag(const EnumName& flag) const {                            \
-	    return ((_value & flag._value) == flag._value);                   \
-	}                                                                     \
-	                                                                      \
-	bool IsDefault() const												  \
-	{                                                                     \
-		return (_value == data_ ## EnumName::_values[0]);                 \
-	}                                                                     \
+    int ToUInt8() const { return (unsigned char)_value; }                 \
                                                                           \
-	static EnumName Default() {											  \
-		return (EnumName)(_enum)data_ ## EnumName::_values[0];            \
-	}                                                                     \
-																		  \
+    int ToInt32() const { return (int)_value; }                           \
+                                                                          \
+    int ToUInt32() const { return (unsigned int)_value; }                 \
+                                                                          \
+    bool HasFlag(const EnumName& flag) const {                            \
+        return ((_value & flag._value) == flag._value);                   \
+    }                                                                     \
+                                                                          \
+    bool IsDefault() const                                                \
+    {                                                                     \
+        return (_value == data_ ## EnumName::_values[0]);                 \
+    }                                                                     \
+                                                                          \
+    static EnumName Default() {                                           \
+        return (EnumName)(_enum)data_ ## EnumName::_values[0];            \
+    }                                                                     \
+                                                                          \
     static EnumName Parse(const TCHAR *s, bool ignore_case)               \
     {                                                                     \
-	    if ((NULL == s) || (_tcslen(s) == 0))                             \
-		    throw std::runtime_error("invalid identifier");               \
-			                                                              \
-		__int64 result = 0;                                               \
-		TCHAR tszValue[256];                                              \
-		int nLen = 0;                                                     \
-		const TCHAR *lpctBegin = s;                                       \
-		const TCHAR *lpctEnd = s;                                         \
-		while ((NULL != lpctBegin) && (NULL != lpctEnd)) {                \
+        if ((NULL == s) || (_tcslen(s) == 0))                             \
+            throw std::runtime_error("invalid identifier");               \
+                                                                          \
+        __int64 result = 0;                                               \
+        TCHAR tszValue[256];                                              \
+        int nLen = 0;                                                     \
+        const TCHAR *lpctBegin = s;                                       \
+        const TCHAR *lpctEnd = s;                                         \
+        while ((NULL != lpctBegin) && (NULL != lpctEnd)) {                \
             while(*lpctBegin == _T(' ')) lpctBegin++; /* Trim left */     \
-		    lpctEnd = _tcsstr(lpctBegin, _T("|"));                        \
-			if (NULL == lpctEnd) {                                        \
+            lpctEnd = _tcsstr(lpctBegin, _T("|"));                        \
+            if (NULL == lpctEnd) {                                        \
                 nLen = (int)_tcslen(lpctBegin);                           \
-			}                                                             \
-			else {                                                        \
-			    nLen = (int)(lpctEnd - lpctBegin);                        \
-			}                                                             \
-			if (nLen > 0) {                                               \
-			    _tcsncpy_s(tszValue, 256, lpctBegin, nLen);               \
-				tszValue[nLen] = _T('\0'); /* EOF string */               \
+            }                                                             \
+            else {                                                        \
+                nLen = (int)(lpctEnd - lpctBegin);                        \
+            }                                                             \
+            if (nLen > 0) {                                               \
+                _tcsncpy_s(tszValue, 256, lpctBegin, nLen);               \
+                tszValue[nLen] = _T('\0'); /* EOF string */               \
                 while(tszValue[nLen - 1] == _T(' ')) {                    \
                     tszValue[--nLen] = _T('\0');                          \
-				}                                                         \
-				if (nLen > 0) {                                           \
-					if (_istdigit(tszValue[0])) {                         \
-					    if ((_tcsstr(tszValue, _T("x")) != NULL) ||       \
-						    (_tcsstr(tszValue, _T("X")) != NULL))         \
-					    {                                                 \
-							TCHAR *end;                                   \
+                }                                                         \
+                if (nLen > 0) {                                           \
+                    if (_istdigit(tszValue[0])) {                         \
+                        if ((_tcsstr(tszValue, _T("x")) != NULL) ||       \
+                            (_tcsstr(tszValue, _T("X")) != NULL))         \
+                        {                                                 \
+                            TCHAR *end;                                   \
                             __int64 result2 = 0;                          \
-							errno = 0;                                    \
-							result2 = (__int64)_tcstoll(tszValue,         \
-														&end, 16);        \
-							if (result2 == 0 && end == tszValue) {        \
-								throw std::runtime_error(                 \
-									"str was not a number");              \
-							}                                             \
-							else if (result2 == LLONG_MAX && errno) {     \
-								throw std::runtime_error(                 \
-									"the value of str does not "          \
-									"fit in __int64");                    \
-							}                                             \
-							else if (*end) {                              \
-								throw std::runtime_error(                 \
-									"str began with a number but "        \
-									"has junk left over at the end");     \
-							}                                             \
-							result |= (__int64)result2;                   \
-						}                                                 \
-						else {                                            \
-						    result |= (__int64)_ttoi64(tszValue);         \
-						}                                                 \
-					}                                                     \
-					else {                                                \
-				        result |= (_underlying)_fromString(tszValue,      \
+                            errno = 0;                                    \
+                            result2 = (__int64)_tcstoll(tszValue,         \
+                                                        &end, 16);        \
+                            if (result2 == 0 && end == tszValue) {        \
+                                throw std::runtime_error(                 \
+                                    "str was not a number");              \
+                            }                                             \
+                            else if (result2 == LLONG_MAX && errno) {     \
+                                throw std::runtime_error(                 \
+                                    "the value of str does not "          \
+                                    "fit in __int64");                    \
+                            }                                             \
+                            else if (*end) {                              \
+                                throw std::runtime_error(                 \
+                                    "str began with a number but "        \
+                                    "has junk left over at the end");     \
+                            }                                             \
+                            result |= (__int64)result2;                   \
+                        }                                                 \
+                        else {                                            \
+                            result |= (__int64)_ttoi64(tszValue);         \
+                        }                                                 \
+                    }                                                     \
+                    else {                                                \
+                        result |= (_underlying)_fromString(tszValue,      \
                                                         ignore_case, 0);  \
-					}                                                     \
-				}                                                         \
-			}                                                             \
+                    }                                                     \
+                }                                                         \
+            }                                                             \
             lpctBegin = lpctEnd + 1;                                      \
-		}                                                                 \
-		                                                                  \
-		if (result != (__int64)(_underlying)result) {                     \
-			char szMsg[256];                                              \
-			sprintf_s(szMsg, "Value was either too "                      \
-					         "large or too small for an %s.",             \
-					typeid(_underlying).name());                          \
-			throw std::runtime_error(szMsg);                              \
-		}                                                                 \
-																		  \
+        }                                                                 \
+                                                                          \
+        if (result != (__int64)(_underlying)result) {                     \
+            char szMsg[256];                                              \
+            sprintf_s(szMsg, "Value was either too "                      \
+                             "large or too small for an %s.",             \
+                    typeid(_underlying).name());                          \
+            throw std::runtime_error(szMsg);                              \
+        }                                                                 \
+                                                                          \
         return (EnumName)(_underlying)result;                             \
     }                                                                     \
                                                                           \
@@ -436,67 +436,67 @@ struct EnumName {                                                         \
                                                                           \
     static bool TryParse(const TCHAR *s,                                  \
                              bool ignore_case,                            \
-							 EnumName& reVal)                             \
+                             EnumName& reVal)                             \
     {                                                                     \
-	    reVal = (EnumName)(_enum)data_ ## EnumName::_values[0];           \
-	    try {                                                             \
+        reVal = (EnumName)(_enum)data_ ## EnumName::_values[0];           \
+        try {                                                             \
             reVal = Parse(s, ignore_case);                                \
-		}                                                                 \
-		catch (...) {                                                     \
-		    return false;                                                 \
-	    }                                                                 \
-		return true;                                                      \
+        }                                                                 \
+        catch (...) {                                                     \
+            return false;                                                 \
+        }                                                                 \
+        return true;                                                      \
     }                                                                     \
                                                                           \
     static bool TryParse(const TCHAR *s, EnumName& reVal)                 \
     {                                                                     \
         return TryParse(s, false, reVal);                                 \
     }                                                                     \
-	                                                                      \
-	static size_t GetMemberCount() { return data_ ## EnumName::_size; }   \
-																		  \
-    static EnumName GetMember(int index)					              \
-	{                                                                     \
-	    return                                                            \
+                                                                          \
+    static size_t GetMemberCount() { return data_ ## EnumName::_size; }   \
+                                                                          \
+    static EnumName GetMember(int index)                                  \
+    {                                                                     \
+        return                                                            \
             ((size_t)index >= data_ ## EnumName::_size) ?                 \
-			(EnumName)(_enum)data_ ## EnumName::_values[0] :              \
-			(EnumName)(_enum)data_ ## EnumName::_values[index];           \
-	}                                                                     \
-																		  \
-    static int IndexOfMember(const EnumName& member) {				      \
-	    for (size_t index = 0; index < data_ ## EnumName::_size;          \
+            (EnumName)(_enum)data_ ## EnumName::_values[0] :              \
+            (EnumName)(_enum)data_ ## EnumName::_values[index];           \
+    }                                                                     \
+                                                                          \
+    static int IndexOfMember(const EnumName& member) {                    \
+        for (size_t index = 0; index < data_ ## EnumName::_size;          \
              ++index)                                                     \
         {                                                                 \
-		    if (data_ ## EnumName::_values[index] == member._value) {     \
-			    return (int)index;                                        \
-			}                                                             \
-		}                                                                 \
-		return -1;                                                        \
-	}                                                                     \
-																		  \
+            if (data_ ## EnumName::_values[index] == member._value) {     \
+                return (int)index;                                        \
+            }                                                             \
+        }                                                                 \
+        return -1;                                                        \
+    }                                                                     \
+                                                                          \
     EnumName() = delete;                                                  \
     EnumName(_enum value) : _value(value) { }                             \
-	EnumName(_underlying value) : _value(value) { }                       \
+    EnumName(_underlying value) : _value(value) { }                       \
     operator _enum() const { return (_enum)_value; }                      \
                                                                           \
-																		  \
-	EnumName& operator|=(const EnumName& v)                               \
-	{                                                                     \
-		_value |= v._value;                                               \
-		return *this;                                                     \
-	}                                                                     \
-																		  \
-	EnumName& operator&=(const EnumName& v)                               \
-	{                                                                     \
-		_value &= v._value;                                               \
-		return *this;                                                     \
-	}                                                                     \
-																		  \
-  private:																  \
+                                                                          \
+    EnumName& operator|=(const EnumName& v)                               \
+    {                                                                     \
+        _value |= v._value;                                               \
+        return *this;                                                     \
+    }                                                                     \
+                                                                          \
+    EnumName& operator&=(const EnumName& v)                               \
+    {                                                                     \
+        _value &= v._value;                                               \
+        return *this;                                                     \
+    }                                                                     \
+                                                                          \
+  private:                                                                \
     _underlying     _value;                                               \
-	                                                                      \
+                                                                          \
     static EnumName _fromString(const TCHAR *s,                           \
-	                                       bool ignore_case = false,      \
+                                           bool ignore_case = false,      \
                                            size_t index = 0)              \
     {                                                                     \
         return                                                            \
@@ -511,11 +511,11 @@ struct EnumName {                                                         \
                                                                           \
     static const TCHAR * const * _trimmed_names()                         \
     {                                                                     \
-		static safe_string_array the_names(data_ ## EnumName::_size);     \
+        static safe_string_array the_names(data_ ## EnumName::_size);     \
         static bool     initialized = false;                              \
                                                                           \
         if (!initialized) {                                               \
-		    initialized = true;                                           \
+            initialized = true;                                           \
             for (size_t index = 0; index < data_ ## EnumName::_size;      \
                  ++index) {                                               \
                                                                           \
@@ -529,66 +529,66 @@ struct EnumName {                                                         \
                              data_ ## EnumName::_raw_names[index],        \
                              length);                                     \
                 the_names[index][length] = _T('\0');                      \
-	        }                                                             \
-	    }                                                                 \
+            }                                                             \
+        }                                                                 \
                                                                           \
         return the_names._str_array;                                      \
     }                                                                     \
-	                                                                      \
-    static bool _is_contains_flags(void) {							      \
-	    static bool result = false;                                       \
-		static bool initialized = false;                                  \
-		                                                                  \
+                                                                          \
+    static bool _is_contains_flags(void) {                                \
+        static bool result = false;                                       \
+        static bool initialized = false;                                  \
+                                                                          \
         if (!initialized) {                                               \
             initialized = true;                                           \
                                                                           \
             _underlying val1 = 0, val2 = 0;                               \
             for (size_t index = 0; index < data_ ## EnumName::_size;      \
                  ++index) {                                               \
-				 val1 += data_ ## EnumName::_values[index];               \
-				 val2 |= data_ ## EnumName::_values[index];               \
+                 val1 += data_ ## EnumName::_values[index];               \
+                 val2 |= data_ ## EnumName::_values[index];               \
             }                                                             \
-			result = (val1 == val2);                                      \
+            result = (val1 == val2);                                      \
         }                                                                 \
                                                                           \
         return result;                                                    \
-	}                                                                     \
-																		  \
-	static const TCHAR * _to_value(__int64 value) {			              \
-		static TCHAR tszValue[256];										  \
-		_stprintf_s(tszValue, _T("%I64d"), value);						  \
-		return tszValue;												  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(unsigned __int64 value) {			  \
-		static TCHAR tszValue[256];										  \
-		_stprintf_s(tszValue, _T("%I64u"), value);						  \
-		return tszValue;												  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(int value) {			                  \
-		return _to_value((__int64)value);								  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(short value) {			              \
-		return _to_value((__int64)value);								  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(char value) {			              \
-		return _to_value((__int64)value);								  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(unsigned int value) {			      \
-		return _to_value((unsigned __int64)value);						  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(unsigned short value) {			      \
-		return _to_value((unsigned __int64)value);						  \
-	}																	  \
-																		  \
-	static const TCHAR * _to_value(unsigned char value) {			      \
-		return _to_value((unsigned __int64)value);						  \
-	}																	  \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(__int64 value) {                       \
+        static TCHAR tszValue[256];                                       \
+        _stprintf_s(tszValue, _T("%I64d"), value);                        \
+        return tszValue;                                                  \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(unsigned __int64 value) {              \
+        static TCHAR tszValue[256];                                       \
+        _stprintf_s(tszValue, _T("%I64u"), value);                        \
+        return tszValue;                                                  \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(int value) {                           \
+        return _to_value((__int64)value);                                 \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(short value) {                         \
+        return _to_value((__int64)value);                                 \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(char value) {                          \
+        return _to_value((__int64)value);                                 \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(unsigned int value) {                  \
+        return _to_value((unsigned __int64)value);                        \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(unsigned short value) {                \
+        return _to_value((unsigned __int64)value);                        \
+    }                                                                     \
+                                                                          \
+    static const TCHAR * _to_value(unsigned char value) {                 \
+        return _to_value((unsigned __int64)value);                        \
+    }                                                                     \
 };
 
 #endif // __JLL_ENUM96_INL__
