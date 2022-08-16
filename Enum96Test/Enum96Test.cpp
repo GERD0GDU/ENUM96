@@ -57,6 +57,11 @@ int main(int argc, char* argv[])
 		? "true"
 		: "false");
 
+	printf("> %-24s --> %s\n", "HasFlag(Output | Video)",
+		eDevType.HasFlag(DirectShowDeviceType::Output | DirectShowDeviceType::Video)
+		? "true"
+		: "false");
+
 	printf("> %-24s --> %s\n", "HasFlag(Video | Audio)",
 		eDevType.HasFlag(DirectShowDeviceType::Video | DirectShowDeviceType::Audio)
 		? "true"
@@ -66,8 +71,9 @@ int main(int argc, char* argv[])
 	printf("> // Remove 'Video' flag\n");
 	eDevType &= ~DirectShowDeviceType::Video;
 
-	_tprintf(_T("> %-24s --> \"%s\"\n"), _T("ToString()")
-		, eDevType.ToString());
+	_tprintf(_T("> %-24s --> \"%s\" (%u)\n"), _T("ToString()")
+		, eDevType.ToString()
+		, eDevType.ToUInt32());
 
 	printf("> %-24s --> %s\n", "HasFlag(Video)",
 		eDevType.HasFlag(DirectShowDeviceType::Video)
@@ -76,6 +82,21 @@ int main(int argc, char* argv[])
 
 	printf("> %-24s --> %s\n", "HasFlag(Video | Audio)",
 		eDevType.HasFlag(DirectShowDeviceType::Video | DirectShowDeviceType::Audio)
+		? "true"
+		: "false");
+
+	printf("> %-24s --> %s\n", "HasFlag(Audio)",
+		eDevType.HasFlag(DirectShowDeviceType::Audio)
+		? "true"
+		: "false");
+
+	printf("> %-24s --> %s\n", "HasFlag(Input)",
+		eDevType.HasFlag(DirectShowDeviceType::Input)
+		? "true"
+		: "false");
+
+	printf("> %-24s --> %s\n", "HasFlag(Input | Audio)",
+		eDevType.HasFlag(DirectShowDeviceType::Input | DirectShowDeviceType::Audio)
 		? "true"
 		: "false");
 

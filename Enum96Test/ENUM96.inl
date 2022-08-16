@@ -342,7 +342,7 @@ struct EnumName {                                                         \
     int ToUInt32() const { return (unsigned int)_value; }				  \
 	                                                                      \
 	bool HasFlag(const EnumName& flag) const {                            \
-	    return !!(_value & flag._value);                                  \
+	    return ((_value & flag._value) == flag._value);                   \
 	}                                                                     \
 	                                                                      \
 	bool IsDefault() const												  \
